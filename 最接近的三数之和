@@ -1,0 +1,33 @@
+/*
+给你一个长度为 n 的整数数组 nums 和 一个目标值 target。请你从 nums 中选出三个整数，使它们的和与 target 最接近。
+
+返回这三个数的和。
+
+假定每组输入只存在恰好一个解。
+
+来源：力扣（LeetCode）
+链接：https://leetcode.cn/problems/3sum-closest
+*/
+
+/*
+思路：直接三次循环会超时，因此采用排序+双指针的方法。首先对数组从小到大排序，接着枚举第一个元素a，对于剩下的两个元素b和c，分别设置两个指针指向i+1和数组末尾n-1，如果求
+和结果大于target则右指针向左移，如果求和结果小于target则左指针向右移，直到两个指针相遇。中间如果求和结果刚好为target则直接弹出。
+*/
+class Solution {
+public:
+    int threeSumClosest(vector<int>& nums, int target) {
+        sort(nums.begin(),nums.end());
+        int ans = nums[0]+nums[1]+nums[2];
+        for (int i = 0;i<nums.size()-2;i++){
+            int l = i+1 , r = nums.size() - 1;
+            while (l < r){
+                int temp = nums[i]+nums[l]+nums[r];
+                if (abs(temp - target) < abs(ans - target)) ans = temp;
+                if (temp > target)  r--;
+                else if (temp < target) l++;
+                else return ans;
+            }
+        }
+        return ans;
+    }
+};
